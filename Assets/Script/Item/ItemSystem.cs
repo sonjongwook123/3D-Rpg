@@ -17,26 +17,36 @@ public class ItemData : ScriptableObject
 public class ItemSystem : MonoBehaviour
 {
     public Player player;
+    public ItemData data;
+    public List<ItemData> dataList;
 
     void Start()
     {
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
     }
 
-    public void UseItem(ItemData item)
+    public void PurchaseItem()
     {
-        switch (item.itemType)
+        if (GameManager.Instance.gameData.Gold >= 100)
         {
-            case ItemData.ItemType.AttackScroll:
-                StartCoroutine(ApplyAttackBoost(item.value, item.duration));
-                break;
+            GameManager.Instance.gameData.Gold -= 100;
+            dataList.Add(data);
         }
-        // 파티클 이펙트
-        ParticleSystem ps = player.GetComponent<ParticleSystem>();
-        if (ps != null) ps.Play();
-        // 사운드 이펙트
-        AudioSource audio = player.GetComponent<AudioSource>();
-        if (audio != null) audio.Play();
+    }
+
+    public void UseItem()
+    {
+        if (dataList.Count > 0)
+        {
+            StartCoroutine(ApplyAttackBoost(dataList[0].value, dataList[0].duration));
+            // 파티클 이펙트
+            //ParticleSystem ps = player.GetComponent<ParticleSystem>();
+            //if (ps != null) ps.Play();
+            // 사운드 이펙트
+            //AudioSource audio = player.GetComponent<AudioSource>();
+            //if (audio != null) audio.Play();
+            dataList.Remove(dataList[0]);
+        }
     }
 
     IEnumerator ApplyAttackBoost(int boost, float duration)

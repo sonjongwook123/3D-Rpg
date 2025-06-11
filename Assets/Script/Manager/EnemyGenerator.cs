@@ -22,7 +22,7 @@ public class EnemyGenerator : MonoBehaviour
         }
         for (var i = 0; i < 10; i++)
         {
-            GameObject @Go = Instantiate(EnemyPrefab);
+            GameObject @Go = Instantiate(EnemyPrefab, new Vector3(Random.Range(-7f, 7f), 1f, Random.Range(-7, 7)), Quaternion.identity);
             @Go.GetComponent<Enemy>().Init(stageNum, themeNum);
             enemyList.Add(@Go);
         }

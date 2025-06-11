@@ -83,6 +83,7 @@ public class Player : MonoBehaviour
                 if (audio != null) audio.Play();
                 if (anim != null) anim.SetBool("Attack", true);
                 OnAttack?.Invoke();
+                SoundManager.Instance.PlaySFX(SoundManager.SFX_Type.Attack, 1f, 1f);
             }
             yield return new WaitForSeconds(data.attackDelay);
             transform.rotation = Quaternion.Euler(0, 0, 0);
